@@ -36,7 +36,7 @@ def build_model(ticker, use_new_data):
 
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="static"))
+app.mount("/static", StaticFiles(directory="docs/static"), name="static")
 html_file_path = os.path.join(os.path.dirname(__file__), "docs", "index.html")
 
 @app.get("/", response_class=HTMLResponse)
