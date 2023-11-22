@@ -7,6 +7,7 @@ from config import settings
 from data import SQLRepository
 from model import GarchModel
 from pydantic import BaseModel
+from fastapi.staticfiles import StaticFiles
 
 class FitIn(BaseModel):
     ticker: str
@@ -35,6 +36,8 @@ def build_model(ticker, use_new_data):
     return model
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"))
 #html_file_path = os.path.join(os.path.dirname(__file__), "index.html")
 html_file_path = os.path.join(os.path.dirname(__file__), "docs", "index.html")
 
