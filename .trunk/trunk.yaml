@@ -20,6 +20,8 @@ lint:
     - ruff
     - bandit
   enabled:
+    - yamllint@1.33.0
+    - actionlint@1.6.26
     - black@23.9.1
     - checkov@3.1.4
     - git-diff-check

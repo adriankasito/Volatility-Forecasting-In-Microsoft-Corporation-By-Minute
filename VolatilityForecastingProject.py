@@ -1,3 +1,4 @@
+# trunk-ignore-all(isort)
 #!/usr/bin/env python
 # coding: utf-8
 
