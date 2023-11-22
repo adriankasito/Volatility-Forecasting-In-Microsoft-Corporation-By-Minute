@@ -1,13 +1,12 @@
 import os
 import sqlite3
 from fastapi import FastAPI
-from starlette.responses import HTMLResponse
-from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
 from config import settings
 from data import SQLRepository
 from model import GarchModel
-from pydantic import BaseModel
-from fastapi.staticfiles import StaticFiles
+from starlette.responses import HTMLResponse
 
 class FitIn(BaseModel):
     ticker: str
@@ -38,9 +37,7 @@ def build_model(ticker, use_new_data):
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"))
-#html_file_path = os.path.join(os.path.dirname(__file__), "index.html")
 html_file_path = os.path.join(os.path.dirname(__file__), "docs", "index.html")
-
 
 @app.get("/", response_class=HTMLResponse)
 async def get_volatility_forecasts():
@@ -48,13 +45,22 @@ async def get_volatility_forecasts():
         with open(html_file_path, "r") as html_file:
             html_content = html_file.read()
 
-        return HTMLResponse(content=html_content, status_code=200, headers={"Content-Type": "text/html"})
+        return HTMLResponse(
+            content=html_content, status_code=200, headers={"Content-Type": "text/html"}
+        )
 
+    except FileNotFoundError:
+        return HTMLResponse(
+            content=f"Error: HTML file not found",
+            status_code=404,
+            headers={"Content-Type": "text/html"},
+        )
     except Exception as e:
-        return HTMLResponse(content=f"Error: {str(e)}", status_code=500, headers={"Content-Type": "text/html"})
-
-    
-
+        return HTMLResponse(
+            content=f"Error: {str(e)}",
+            status_code=500,
+            headers={"Content-Type": "text/html"},
+        )
 
 @app.post("/fit", status_code=200, response_model=FitOut)
 def fit_model(request: FitIn):
@@ -65,7 +71,12 @@ def fit_model(request: FitIn):
         model.fit(p=request.p, q=request.q)
         filename = model.dump()
         response["success"] = True
-        response["message"] = f"Trained and saved {filename}. Metrics: AIC {model.aic}, BIC {model.bic}."
+        response[
+            "message"
+        ] = f"Trained and saved {filename}. Metrics: AIC {model.aic}, BIC {model.bic}."
+    except FileNotFoundError:
+        response["success"] = False
+        response["message"] = "Error: Data file not found."
     except Exception as e:
         response["success"] = False
         response["message"] = str(e)
@@ -81,6 +92,10 @@ def get_prediction(request: PredictIn):
         response["success"] = True
         response["forecast"] = prediction
         response["message"] = ""
+    except FileNotFoundError:
+        response["success"] = False
+        response["forecast"] = {}
+        response["message"] = "Error: Model file not found."
     except Exception as e:
         response["success"] = False
         response["forecast"] = {}

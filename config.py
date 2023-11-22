@@ -32,6 +32,7 @@ class Settings(BaseSettings):
 
 # Create an instance of the Settings class with your values
 settings = Settings(
-alpha_api_key="1LDHCZV19GB3C9QF",
-db_name="miscrosoft_corporation_financial_data",
-model_directory="/Users/baba/Volatility Forecasting Project")
+    alpha_api_key="1LDHCZV19GB3C9QF",
+    db_name="miscrosoft_corporation_financial_data",
+    model_directory="/Users/baba/Volatility Forecasting Project",
+)
