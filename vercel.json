@@ -6,6 +6,7 @@
     "routes": [
       { "src": "/static/(.*)", "dest": "/docs/static/$1" },
       { "src": "/(.*)", "dest": "/main.py" }
-    ]
+    ],
+    "includeFiles": ["main.py", "requirements.txt", "docs/index.html", "docs/static/*"]
   }
   
