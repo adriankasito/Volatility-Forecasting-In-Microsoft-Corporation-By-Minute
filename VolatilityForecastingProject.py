@@ -433,7 +433,7 @@ url = "http://localhost:8008/fit"
 json = {
     "ticker": "MSFT",
     "use_new_data":False,
-    "n_observations": 100000,
+    "n_observations": 100,
     "p": 1,
     "q":1
 }
