@@ -34,5 +34,5 @@ class Settings(BaseSettings):
 settings = Settings(
     alpha_api_key="1LDHCZV19GB3C9QF",
     db_name="miscrosoft_corporation_financial_data",
-    model_directory="Volatility-Forecasting-In-Microsoft-Corporation-By-Minute",
+    model_directory="/home/mercy/volatilityProject/",
 )
