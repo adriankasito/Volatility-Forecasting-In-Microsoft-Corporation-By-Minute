@@ -1,3 +1,16 @@
 [build]
-  command = "uvicorn main:app --host 0.0.0.0 --port 8008"
-  environment = ["PYTHON_VERSION=3.9"]
+command = "uvicorn main:app --host 0.0.0.0 --port 8008"
+environment = {
+  PYTHON_VERSION = "3.9"
+}
+
+[functions]
+"*" = {
+  handler = "main.app"
+}
+
+[build.environment]
+PYTHON_VERSION = "3.9"
+
+[build.commands]
+uvicorn main:app --host 0.0.0.0 --port 8008
